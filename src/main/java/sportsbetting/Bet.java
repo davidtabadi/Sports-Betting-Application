@@ -60,7 +60,7 @@ public class Bet {
 		this.betId = betId;
 	}
 
-	@Column(name = "BET_TITLE", nullable = false, unique = true)
+	@Column(name = "BET_TITLE", nullable = false)
 	public String getBetTitle() {
 		return betTitle;
 	}

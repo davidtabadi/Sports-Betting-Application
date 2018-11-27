@@ -6,12 +6,12 @@
     <title>SPORTS BETTING</title>
     <script type="text/javascript" src="angular.min.js"></script>
     <script type="text/javascript" src="angular-resource.min.js"></script>
-    <script type="text/javascript" src="sports.js"></script>
+    <script type="text/javascript" src="index.js"></script>
     <link rel="stylesheet" type="text/css" href="css.css">
 </head>
 
 <body align="center">
-    <div ng-app="sportBetting" ng-controller="sportController as c">
+    <div ng-app="sportsBettingApp" ng-controller="sportController as c">
     
         <div ng-show="c.loginDiv">
 
@@ -103,7 +103,7 @@
                     <tr>
                     	<td>ID: {{c.bookieFields.bookieId}}</td>
                         <td>Bookie Name: {{c.bookieFields.bookieName}}</td>
-                       <td>Bookie Password: {{c.bookieFields.bookiePassword}}</td>
+                        <td>Bookie Password: {{c.bookieFields.bookiePassword}}</td>
                         <td>Email: {{c.bookieFields.bookieEmail}}</td>
                     </tr>
                 </table>
@@ -392,12 +392,6 @@
                 <br>
                 <input type="button" value="Get All Bets" ng-click="c.getBookieBetsButton()" id="buttonInput">
                 <br>
-<!--                 <input type="button" value="Get Coupons by Type" ng-click="c.getBookieBetsByTypeButton()" id="buttonInput"> -->
-<!--                 <br> -->
-<!--                 <input type="button" value="Get Coupons by Price" ng-click="c.getBookieBetsByPriceButton()" id="buttonInput"> -->
-<!--                 <br> -->
-<!--                 <input type="button" value="Get Coupons by Date" ng-click="c.getBookieBetsByDateButton()" id="buttonInput"> -->
-<!--                 <br> -->
 
             </div>
 
@@ -412,7 +406,6 @@
                         </li>
                         <li>
                             <input type="date" ng-model="c.betFields.eventDate" class="field-style field-split align-left" placeholder="Event Date" />
-<!--                             <input type="date" ng-model="c.betFields.endDate" class="field-style field-split align-right" placeholder="End Date" /> -->
                         </li>
                         <li>
                             <input type="text" ng-model="c.betFields.betWager" class="field-style field-split align-left" placeholder="Wager" />
@@ -447,7 +440,6 @@
                         <td>ID: {{c.betFields.betId}}</td>
                         <td>Title: {{c.betFields.betTitle}}</td>
                         <td>Event Date: {{c.betFields.eventDate | date: 'dd/MM/yyyy'}}</td>
-<!--                         <td>End Date: {{c.betFields.endDate | date: 'dd/MM/yyyy'}}</td> -->
                         <td>Wager: {{c.betFields.betWager}}</td>
                         <td>Sport: {{c.betFields.sport}}</td>
                         <td>Image: {{c.betFields.betImage}}</td>
@@ -510,7 +502,6 @@
                         <td>ID: {{c.betFields.betId}}</td>
                         <td>Title: {{c.betFields.betTitle}}</td>
                         <td>Event Date: {{c.betFields.eventDate | date: 'dd/MM/yyyy'}}</td>
-<!--                         <td>End Date: {{c.couponFields.endDate | date: 'dd/MM/yyyy'}}</td> -->
                         <td>Wager: {{c.betFields.betWager}}</td>
                         <td>Sport: {{c.betFields.sport}}</td>
                         <td>Image: {{c.betFields.betImage}}</td>
@@ -567,7 +558,6 @@
                         <td>ID: {{c.betFields.betId}}</td>
                         <td>Title: {{c.betFields.betTitle}}</td>
                         <td>Event Date: {{c.betFields.eventDate | date: 'dd/MM/yyyy'}}</td>
-<!--                         <td>End Date: {{c.couponFields.endDate | date: 'dd/MM/yyyy'}}</td> -->
                         <td>Wager: {{c.betFields.betWager}}</td>
                         <td>Sport: {{c.betFields.sport}}</td>
                         <td>Image: {{c.betFields.betImage}}</td>
@@ -596,7 +586,6 @@
                         <td>ID: {{c.betFields.betId}}</td>
                         <td>Title: {{c.betFields.betTitle}}</td>
                         <td>Event Date: {{c.betFields.eventDate | date: 'dd/MM/yyyy'}}</td>
-<!--                         <td>End Date: {{c.couponFields.endDate | date: 'dd/MM/yyyy'}}</td> -->
                         <td>Wager: {{c.betFields.betWager}}</td>
                         <td>Sport: {{c.betFields.sport}}</td>
                         <td>Image: {{c.betFields.betImage}}</td>
@@ -609,111 +598,6 @@
             	<div ng-show="c.getAllBetsExceptionDiv" id="error"><b>{{c.errorMessage}}</b></div>
             </div>
 
-<!--             <div ng-show="c.getCouponByTypeDiv"> -->
-<!--                 <form ng-submit="c.getCouponByTypeForm()" class="form-style-9"> -->
-              
-<!--                 <h2>Get Bet by Sport</h2> -->
-<!--                     <ul> -->
-<!--                         <li> -->
-<!--                             <input list="typeBrowsers" name="typeBrowsers" ng-model="c.couponFields.type" class="field-style field-full align-none" placeholder="Type" /> -->
-<!--                             <datalist id="typeBrowsers"> -->
-<!--                                 <option value="RESTAURANTS"> -->
-<!--        							<option value="ELECTRICITY"> -->
-<!--         						<option value="FOOD"> -->
-<!--         						<option value="HEALTH"> -->
-<!--         						<option value="SPORTS"> -->
-<!--         						<option value="CAMPING"> -->
-<!--         						<option value="TRAVELING"> -->
-<!--                             </datalist> -->
-<!--                         </li> -->
-<!--                         <li class="submit"> -->
-<!--                             <input type="submit" value="Submit" class="field-style field-split align-left"/> -->
-<!--                             <input type="button" value="Reset Fields" ng-click="c.getCouponByTypeResetButton()" class="field-style field-split align-right"/> -->
-<!--                         </li> -->
-<!--                     </ul> -->
-<!--                 </form> -->
-                
-<!--                 <div ng-show="c.couponByTypeTableDiv" ng-repeat="coupon in c.couponByType"> -->
-<!--                 <table id="resultTable"> -->
-<!--                     <tr> -->
-<!--                     	<td>ID: {{coupon.id}}</td> -->
-<!--                         <td>Title: {{coupon.title}}</td> -->
-<!--                         <td>Start Date: {{coupon.startDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>End Date: {{coupon.endDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>Amount: {{coupon.amount}}</td> -->
-<!--                         <td>Type: {{coupon.type}}</td> -->
-<!--                         <td>Message: {{coupon.message}}</td> -->
-<!--                         <td>Price: {{coupon.price}}</td> -->
-<!--                         <td>Image: {{coupon.image}}</td> -->
-<!--                     </tr> -->
-<!--                 </table> -->
-<!--             	</div> -->
-            	
-<!--             	<div ng-show="c.couponByTypeExceptionDiv" id="error"><b>{{c.errorMessage}}</b></div> -->
-<!--             </div> -->
-
-<!--             <div ng-show="c.getCouponByPriceDiv"> -->
-<!--                 <form ng-submit="c.getCouponByPriceForm()" class="form-style-9"> -->
-<!--                     <h2>Get Coupons by Price</h2> -->
-<!--                     <ul> -->
-<!--                         <li> -->
-<!--                             <input type="text" ng-model="c.couponFields.price" class="field-style field-full align-none" placeholder="Price" /> -->
-<!--                         </li> -->
-<!--                         <li class="submit"> -->
-<!--                             <input type="submit" value="Submit" class="field-style field-split align-left"/> -->
-<!--                             <input type="button" value="Reset Fields" ng-click="c.getCouponByPriceResetButton()" class="field-style field-split align-right"/> -->
-<!--                         </li> -->
-<!--                     </ul> -->
-<!--                 </form> -->
-                
-<!--                 <div ng-show="c.couponByPriceTableDiv" ng-repeat="coupon in c.couponByPrice"> -->
-<!--                 <table id="resultTable"> -->
-<!--                     <tr> -->
-<!--                     	<td>ID: {{coupon.id}}</td> -->
-<!--                         <td>Title: {{coupon.title}}</td> -->
-<!--                         <td>Start Date: {{coupon.startDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>End Date: {{coupon.endDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>Amount: {{coupon.amount}}</td> -->
-<!--                         <td>Type: {{coupon.type}}</td> -->
-<!--                         <td>Message: {{coupon.message}}</td> -->
-<!--                         <td>Price: {{coupon.price}}</td> -->
-<!--                         <td>Image: {{coupon.image}}</td> -->
-<!--                     </tr> -->
-<!--                 </table> -->
-<!--             	</div> -->
-            	
-<!--             	<div ng-show="c.couponByPriceExceptionDiv" id="error"> <b>{{c.errorMessage}}</b> </div> -->
-<!--             </div> -->
-
-<!--             <div ng-show="c.getCouponByDateDiv"> -->
-<!--                 <form ng-submit="c.getCouponByDateForm()" class="form-style-9"> -->
-<!--                     <h2>Get Coupons by Date</h2> -->
-<!--                     <ul> -->
-<!--                         <li> -->
-<!--                             <input type="date" ng-model="c.couponFields.endDate" class="field-style field-full align-none" placeholder="End Date: yyyy-MM-dd" /> -->
-<!--                         </li> -->
-<!--                         <li class="submit"> -->
-<!--                             <input type="submit" value="Submit" class="field-style field-split align-left"/> -->
-<!--                             <input type="button" value="Reset Fields" ng-click="c.getCouponByDateResetButton()" class="field-style field-split align-right"/> -->
-<!--                         </li> -->
-<!--                     </ul> -->
-<!--                 </form> -->
-                
-<!--                 <div ng-show="c.couponByDateTableDiv" ng-repeat="coupon in c.couponByDate"> -->
-<!--                 <table id="resultTable"> -->
-<!--                     <tr> -->
-<!--                     	<td>ID: {{coupon.id}}</td> -->
-<!--                         <td>Title: {{coupon.title}}</td> -->
-<!--                         <td>Start Date: {{coupon.startDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>End Date: {{coupon.endDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>Amount: {{coupon.amount}}</td> -->
-<!--                         <td>Type: {{coupon.type}}</td> -->
-<!--                         <td>Message: {{coupon.message}}</td> -->
-<!--                         <td>Price: {{coupon.price}}</td> -->
-<!--                         <td>Image: {{coupon.image}}</td> -->
-<!--                     </tr> -->
-<!--                 </table> -->
-<!--             	</div> -->
             	
             	<div ng-show="c.couponByDateExceptionDiv" id="error"><b>{{c.errorMessage}}</b></div>
             </div>
@@ -733,7 +617,7 @@
             <div class="top">
 
                 <input type="button" value="Home" ng-click="c.homeButton()" id="home">
-                <input type="button" value="Logout" ng-click="c.customerLogoutButton()" id="logout">
+                <input type="button" value="Logout" ng-click="c.playerLogoutButton()" id="logout">
 
             </div>
 
@@ -742,17 +626,12 @@
                 <input type="button" value="Take Bet" ng-click="c.takeBetButton()" id="buttonInput">
                 <br>
                 <input type="button" value="My Bets" ng-click="c.getPlayerBetsButton()" id="buttonInput">
-<!--                 <br> -->
-<!--                 <input type="button" value="Get All Bets by Sport" ng-click="c.getPlayerBetsByTypeButton()" id="buttonInput"> -->
-<!--                 <br> -->
-<!--                 <input type="button" value="Get All Bets by Odds" ng-click="c.getPlayerBetsByPriceButton()" id="buttonInput"> -->
-<!--                 <br> -->
 
             </div>
 
             <h1 class="form-style-9">Player</h1>
 
-            <div ng-show="c.takeBetDiv">
+            <div ng-show="c.showAllBetsBetDiv">
                 <form ng-submit="c.showAllBetsForm()" class="form-style-9">
                     <h2>Show All Bets</h2>
                     <ul>
@@ -770,7 +649,6 @@
 	                    <td>ID: {{c.betFields.betId}}</td>
                         <td>Title: {{c.betFields.betTitle}}</td>
                         <td>Event Date: {{c.betFields.eventDate | date: 'dd/MM/yyyy'}}</td>
-<!--                         <td>End Date: {{c.couponFields.endDate | date: 'dd/MM/yyyy'}}</td> -->
                         <td>Wager: {{c.betFields.betWager}}</td>
                         <td>Sport: {{c.betFields.sport}}</td>
                         <td>Image: {{c.betFields.betImage}}</td>
@@ -805,10 +683,9 @@
                 <div ng-show="c.getPlayerBetsTableDiv" ng-repeat="coupon in c.getPlayerBets">
                 <table id="resultTable">
                     <tr>
-                         <td>ID: {{c.betFields.betId}}</td>
+                        <td>ID: {{c.betFields.betId}}</td>
                         <td>Title: {{c.betFields.betTitle}}</td>
                         <td>Event Date: {{c.betFields.eventDate | date: 'dd/MM/yyyy'}}</td>
-<!--                         <td>End Date: {{c.couponFields.endDate | date: 'dd/MM/yyyy'}}</td> -->
                         <td>Wager: {{c.betFields.betWager}}</td>
                         <td>Sport: {{c.betFields.sport}}</td>
                         <td>Image: {{c.betFields.betImage}}</td>
@@ -821,80 +698,6 @@
             	<div ng-show="c.getPlayerBetsExceptionDiv" id="error"><b>{{c.errorMessage}}</b></div>
             </div>
 
-<!--             <div ng-show="c.getAllPurchasedCouponsByTypeDiv"> -->
-<!--                 <form ng-submit="c.getPurchasedCouponByTypeForm()" class="form-style-9"> -->
-<!--                     <h2>Get Coupons by Type</h2> -->
-<!--                     <ul> -->
-<!--                         <li> -->
-<!--                             <input list="typeBrowsersCustomer" name="typeBrowsersCustomer" ng-model="c.couponFields.type" class="field-style field-full align-none" placeholder="Type" /> -->
-<!--                             <datalist id="typeBrowsersCustomer"> -->
-<!--                                 <option value="RESTAURANTS"> -->
-<!--        							<option value="ELECTRICITY"> -->
-<!--         						<option value="FOOD"> -->
-<!--         						<option value="HEALTH"> -->
-<!--         						<option value="SPORTS"> -->
-<!--         						<option value="CAMPING"> -->
-<!--         						<option value="TRAVELING"> -->
-<!--                             </datalist> -->
-<!--                         </li> -->
-<!--                         <li class="submit"> -->
-<!--                             <input type="submit" value="Submit" class="field-style field-split align-left"/> -->
-<!--                             <input type="button" value="Reset Fields" ng-click="c.purchasedCouponByTypeResetButton()" class="field-style field-split align-right"/> -->
-<!--                         </li> -->
-<!--                     </ul> -->
-<!--                 </form> -->
-                
-<!--                 <div ng-show="c.purchasedCouponByTypeTableDiv" ng-repeat="coupon in c.purchasedCouponByType"> -->
-<!--                 <table id="resultTable"> -->
-<!--                     <tr> -->
-<!--                     	<td>ID: {{coupon.id}}</td> -->
-<!--                         <td>Title: {{coupon.title}}</td> -->
-<!--                         <td>Start Date: {{coupon.startDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>End Date: {{coupon.endDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>Amount: {{coupon.amount}}</td> -->
-<!--                         <td>Type: {{coupon.type}}</td> -->
-<!--                         <td>Message: {{coupon.message}}</td> -->
-<!--                         <td>Price: {{coupon.price}}</td> -->
-<!--                         <td>Image: {{coupon.image}}</td> -->
-<!--                     </tr> -->
-<!--                 </table> -->
-<!--             	</div> -->
-            	
-<!--             	<div ng-show="c.purchasedCouponByTypeExceptionDiv" id="error"><b>{{c.errorMessage}}</b></div> -->
-<!--             </div> -->
-
-<!--             <div ng-show="c.getAllPurchasedCouponsByPriceDiv"> -->
-<!--                 <form ng-submit="c.purchasedCouponByPriceForm()" class="form-style-9"> -->
-<!--                     <h2>Get Coupons by Price</h2> -->
-<!--                     <ul> -->
-<!--                         <li> -->
-<!--                             <input type="text" ng-model="c.couponFields.price" class="field-style field-full align-none" placeholder="Price" /> -->
-<!--                         </li> -->
-<!--                         <li class="submit"> -->
-<!--                             <input type="submit" value="Submit" class="field-style field-split align-left"/> -->
-<!--                             <input type="button" value="Reset Fields" ng-click="c.purchasedCouponByPriceResetButton()" class="field-style field-split align-right"/> -->
-<!--                         </li> -->
-<!--                     </ul> -->
-<!--                 </form> -->
-                
-<!--                 <div ng-show="c.purchasedCouponByPriceTableDiv" ng-repeat="coupon in c.purchasedCouponByPrice"> -->
-<!--                 <table id="resultTable"> -->
-<!--                     <tr> -->
-<!--                     	<td>ID: {{coupon.id}}</td> -->
-<!--                         <td>Title: {{coupon.title}}</td> -->
-<!--                         <td>Start Date: {{coupon.startDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>End Date: {{coupon.endDate | date: 'dd/MM/yyyy'}}</td> -->
-<!--                         <td>Amount: {{coupon.amount}}</td> -->
-<!--                         <td>Type: {{coupon.type}}</td> -->
-<!--                         <td>Message: {{coupon.message}}</td> -->
-<!--                         <td>Price: {{coupon.price}}</td> -->
-<!--                         <td>Image: {{coupon.image}}</td> -->
-<!--                     </tr> -->
-<!--                 </table> -->
-<!--             	</div> -->
-            	
-<!--             	<div ng-show="c.purchasedCouponByPriceExceptionDiv" id="error"><b>{{c.errorMessage}}</b></div> -->
-<!--             </div> -->
         </div>
     </div>
 

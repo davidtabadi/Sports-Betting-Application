@@ -8,7 +8,7 @@ public interface AdminSportService {
 
 	public Bookie updateBookie(Long bookieId, Bookie bookieToUpdate) throws SportException;
 
-	public void removeBookie(Long bookieId) throws SportException;
+	public void removeBookie(Long bookieId, Bookie bookieToRemove) throws SportException;
 
 	public Bookie getBookie(Long bookieId) throws SportException;
 
@@ -18,7 +18,7 @@ public interface AdminSportService {
 
 	public Player updatePlayer(Long playerId, Player playerToUpdate) throws SportException;
 
-	public void removePlayer(Long playerId) throws SportException;
+	public void removePlayer(Long playerId, Player playerToRemove) throws SportException;
 
 	public Player getPlayer(Long playerId) throws SportException;
 

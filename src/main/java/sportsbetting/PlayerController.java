@@ -36,13 +36,15 @@ public class PlayerController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/api/player/login/{userName}/{password}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Message playerUserLogin(@PathVariable("userName") String userName, @PathVariable("password") String password,
-			HttpSession session) throws SportException {
+	public ClientTypeDTO playerUserLogin(@PathVariable("userName") String userName,
+			@PathVariable("password") String password, HttpSession session) throws SportException {
 		playerService.playerLogin(ClientType.PLAYER, userName, password);
 		if ((playerService.playerLogin(ClientType.PLAYER, userName, password)) != null && userName != null
 				&& !userName.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
 			session.setAttribute("player", playerService);
-			return new Message("Player: Session ID: " + session.getId());
+			String sessionID = session.getId();
+			System.err.println("Player Session ID: " + sessionID);
+			return new ClientTypeDTO(userName, password, ClientType.PLAYER);
 		} else {
 			throw new SportException("Player Login Failed");
 		}
@@ -79,4 +81,25 @@ public class PlayerController {
 				.toArray(new Bet[0]);
 		return playerBetsUpToWager;
 	}
+
+	@RequestMapping(method = RequestMethod.GET, path = "/api/player/getallavailabledbets", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Bet[] getAllAvailableBets(HttpSession session) throws SportException {
+		Bet[] allAvailableBets = getPlayerServiceFromSession(session).getAllAvailableBets().toArray(new Bet[0]);
+		return allAvailableBets;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, path = "/api/player/getallavailabledbetsbysport/{sport}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Bet[] getAllAvailableBetsBySport(@PathVariable Sport sport, HttpSession session) throws SportException {
+		Bet[] allAvailableBetsBySport = getPlayerServiceFromSession(session).getAllAvailableBetsBySport(sport)
+				.toArray(new Bet[0]);
+		return allAvailableBetsBySport;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, path = "/api/player/getallavailabledbetsuptowager/{wager}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Bet[] getAllAvailableBetsUpToWager(@PathVariable double wager, HttpSession session) throws SportException {
+		Bet[] allAvailableBetsUpToWager = getPlayerServiceFromSession(session).getAllAvailableBetsUpToWager(wager)
+				.toArray(new Bet[0]);
+		return allAvailableBetsUpToWager;
+	}
+
 }

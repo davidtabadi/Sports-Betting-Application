@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,12 +28,11 @@ public class Bookie {
 		super();
 	}
 
-	public Bookie(String bookieName, String bookiePassword, String bookieEmail, Collection<Bet> bookieBets) {
+	public Bookie(String bookieName, String bookiePassword, String bookieEmail) {
 		super();
 		this.bookieName = bookieName;
 		this.bookiePassword = bookiePassword;
 		this.bookieEmail = bookieEmail;
-		this.bookieBets = bookieBets;
 	}
 
 	@Id
@@ -74,7 +73,7 @@ public class Bookie {
 		this.bookieEmail = bookieEmail;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "BOOKIE_BETS", joinColumns = @JoinColumn(name = "BOOKIE_ID"), inverseJoinColumns = @JoinColumn(name = "BET_ID"))
 	public Collection<Bet> getBookieBets() {
 		return bookieBets;
@@ -87,7 +86,7 @@ public class Bookie {
 	@Override
 	public String toString() {
 		return "Bookie [bookieId=" + bookieId + ", bookieName=" + bookieName + ", bookiePassword=" + bookiePassword
-				+ ", bookieEmail=" + bookieEmail + ", bookieBets=" + bookieBets + "]";
+				+ ", bookieEmail=" + bookieEmail + "]";
 	}
 
 }

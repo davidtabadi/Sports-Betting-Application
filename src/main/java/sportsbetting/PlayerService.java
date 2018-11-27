@@ -6,6 +6,12 @@ public interface PlayerService {
 
 	public Bet takeBet(Bet betToTake) throws SportException;
 
+	public Collection<Bet> getAllAvailableBets() throws SportException;
+
+	public Collection<Bet> getAllAvailableBetsBySport(Sport sport) throws SportException;
+
+	public Collection<Bet> getAllAvailableBetsUpToWager(double wager) throws SportException;
+
 	public Collection<Bet> getMyPlayerBets() throws SportException;
 
 	public Collection<Bet> getMyPlayerBetsBySport(Sport sport) throws SportException;

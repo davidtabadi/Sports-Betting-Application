@@ -1,0 +1,73 @@
+<!-- <!DOCTYPE html> -->
+<!-- <html> -->
+<!-- <head> -->
+<!-- <meta charset="windows-1255"> -->
+<!-- <script type="text/javascript" src="angular.min.js"></script> -->
+<!-- <script type="text/javascript" src="angular-resource.min.js"></script> -->
+<!-- <script type="text/javascript" src="index.js"></script> -->
+<!-- <link rel="stylesheet" href="index.css"/> -->
+
+<!-- <title>Sports Betting Application</title> -->
+<!-- </head> -->
+<!-- <body> -->
+
+<!-- <div ng-app="sportsBettingApp" ng-controller="SportsController as c">  -->
+
+<!-- <h1 class="main"> Sports Betting Application </h1> -->
+
+<!-- <div id="loginForm" ng-hide="c.isLoggedIn"> -->
+<!-- <label> Username: <input ng-model="c.loginFields.username" placeholder="Enter your username"> </label> <br/> -->
+<!-- <label> Password: <input ng-model="c.loginFields.password" placeholder="Enter yor password"></label> <br/> -->
+<!-- <label> Client Type:  -->
+<!-- <select ng-model="c.loginFields.clientType"> -->
+<!-- <option value="ADMINSPORT">ADMINSPORT</option> -->
+<!-- <option value="BOOKIE">BOOKIE</option> -->
+<!-- <option value="PLAYER">PLAYER</option> -->
+<!-- </select> -->
+<!-- </label> <br/> -->
+<!-- <button ng-click="c.login()"> Login </button> -->
+<!-- </div> -->
+
+<!-- <!-- ADMINSPORT page will shown here --> -->
+<!-- <div ng-show="c.isAdmin()">  -->
+
+<!-- <div ng-init="c.loadBookies()" > -->
+<!-- <h3> Welcome {{c.loginFields.username }}</h3> <br/> -->
+<!-- <h3> Bookies: </h3> <br/> -->
+<!-- <h3> Bookies List </h3> <button ng-click="c.loadBookies()"> All Bookies </button> -->
+<!-- <ul> -->
+<!-- 		<tr ng-repeat="bookie in allBookies"> -->
+<!-- 							<td>{{ bookie.bookieId }}</td> -->
+<!-- 							<td>{{ bookie.bookieName }}</td> -->
+<!-- 							<td>{{ bookie.bookiePassward }}</td> -->
+<!-- 							<td>{{ bookie.bookieEmail }}</td> -->
+<!-- 			<button ng-click="c.removeBookie(bookie)">Remove</button> -->
+<!-- 			<button ng-click="c.updateBookie(bookie)">Update</button> -->
+<!-- 			<div ng-show="bookie.updateBookie"> -->
+<!-- 				<label>New Password: <input ng-model="bookie.bookiePassword"/></label> -->
+<!-- 				<label>New Email: <input ng-model="bookie.bookieEmail"/></label> -->
+<!-- 				<button ng-click="c.updateBookie(bookie)">Update Bookie # {{bookie.bookieId}}</button> -->
+<!-- 				<button ng-click="c.getBookie()">Refresh Bookie # {{bookie.bookieId}}</button> -->
+<!-- 			</div> -->
+<!-- 		</tr> -->
+<!-- </ul> -->
+
+
+<!-- </div> -->
+
+
+<!-- <hr/> -->
+<!-- 	<button ng-click="c.adminlogout()">Logout</button> -->
+
+<!-- <br/> -->
+<!-- <div class="infoMessage">{{c.infoMessage}}</div> -->
+<!-- <div class="errorMessage">{{c.errorMessage}}</div> -->
+
+<!-- </div> -->
+
+
+
+<!-- </div> -->
+
+<!-- </body> -->
+<!-- </html> -->

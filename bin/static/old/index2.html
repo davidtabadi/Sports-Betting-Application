@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html ng-app="sportsBettingApp">
+<head>
+<meta charset="windows-1255">
+<script type="text/javascript" src="angular.min.js"></script>
+<script type="text/javascript" src="angular-resource.min.js"></script>
+<script type="text/javascript" src="index.js"></script>
+<link rel="stylesheet" href="index.css"/>
+
+<title>Sports Betting Application</title>
+</head>
+<body>
+
+<!-- <div ng-app="sportsBettingApp" ng-controller="SportsController as c"> -->
+<!-- <h1 class="main"> Sports Betting Application </h1> -->
+
+<!--  This div will be shown before client is logged in  -->
+<div id="loginPage" class="center loginpage" ng-controller="loginCtrl" ng-init="init()" ng-hide="isLoggedIn()" >
+		<input class="textField2" type="text" ng-model="username" placeholder="Username"><br /> 
+		<input class="textField2" type="text" ng-model="password" placeholder="Password"><br />
+		<select name="clientType" class="textField2" ng-model="clientType">
+			<option value="PLAYER">PLAYER</option>
+			<option value="BOOKIE">BOOKIE</option>
+			<option value="ADMINSPORT">ADMINSPORT</option>
+		</select>
+		<br />
+		<div class="center">
+			<button class="button3" ng-click="login(username, password, clientType)" width="44">Login</button>
+		</div>
+
+		
+		<div class="center">
+			<md-datepicker ng-model="birthday"></md-datepicker>
+		</div>
+		<div class="center loginpage" ng-controller="loginCtrl" ng-show="loginFailed()">
+			Incorrect user name or password, please try again
+		</div>
+		<div class="center loginpage" ng-controller="loginCtrl" ng-hide="loginFailed()">
+			Please Log in
+		</div>
+	</div>
+
+
+<!-- <br/> -->
+<!-- <div class="infoMessage"> {{c.infoMessage}} </div>  -->
+<!-- <div class="errorMessage"> {{c.errorMessage}} </div> -->
+
+
+
+<!--  This div will be shown after successful PLAYER login  -->
+	<div id="playerPage"  class="center mainpage" ng-controller="playerCtrl" ng-init="init()" ng-show="isPlayer()">
+		<div class="center mainpage title" >
+			<div class="name-container">
+				<div class="name">
+					<div class="side">Wellcome {{getPlayer().name}}</div>
+					<div class="side back">{{getPlayer().clientType}}</div>
+				</div>
+			</div>
+		</div>
+		<form name="betSportForm" class="center"> 
+			<input type="radio" ng-model="betSport" value="ALL">All<br />
+			<input type="radio" ng-model="betSport" value="FOOTBALL">FOOTBALL<br />
+			<input type="radio" ng-model="betSport" value="BASKETBALL">BASKETBALL<br />
+			<input type="radio" ng-model="betSport" value="SOCCER">SOCCER<br />
+			<input type="radio" ng-model="betSport" value="BASEBALL">BASEBALL<br />
+			<input type="radio" ng-model="betSport" value="HOCKEY">HOCKEY<br />
+			<input type="radio" ng-model="betSport" value="TENNIS">TENNIS<br />
+			<input type="radio" ng-model="betSport" value="UPTO_WAGER">UPTO_WAGER:
+			<input class="textField2" type="text" ng-model="maxWager" placeholder="Maximum Wager"><br /> 
+			<input type="button" class="button" value="Show placed bets" ng-click="getplayerbets(sport)" />
+			<input type="button" class="button" value="Show available bets" ng-click="getAllAvailableBets(sport)" />
+		</form>
+		<div id="betsDiv" class="center">
+			<div class="tableDiv">
+				<table class="general">
+					<tr class="head">
+						<th colspan="9">
+							<div id="tableDisplayHeader">
+								Displaying : {{ displayMode }} bets
+							</div>
+						</th>
+					</tr>
+					<tr class="head">
+						<th>BET_ID</th>
+						<th>BET_TITLE</th>
+						<th>SPORT</th>
+						<th>EVENT_DATE</th>
+						<th>WAGER</th>
+						<th>ODDS</th>
+						<th>IMAGE</th>
+						<th>RECEIPT</th>
+					</tr>
+					<tr ng-repeat="bet in playerBets"
+						ng-class="{'selected':$index == selectedRow}"
+						ng-click="setClickedRow($index, bet)">
+						<td>{{ bet.betId }}</td>
+						<td>{{ bet.betTitle }}</td>
+						<td>{{ bet.sport }}</td>
+						<td>{{ bet.eventDate | date:'MM-dd-yyyy'}}</td>
+						<td>{{ bet.betWager }}</td>
+						<td>{{ bet.betOdds }}</td>
+						<td>{{ bet.betImage }}</td>
+						<td>{{ bet.betReceipt }}</td>
+					</tr>
+				</table>
+			</div>
+			<div ng-show="isPlacingButtonEnabled()" ng-click="placeBet(bet)" class="center">
+				<input type="button" class="button2" value="place bet"/>
+			</div>
+			
+		</div>
+	</div>
+	
+	
+	
+	<!--  This div will be shown after successful BOOKIE login  -->
+	<div id="bookiePage" class="center mainpage" ng-controller="bookieCtrl" ng-init="init()" ng-show="isBookie()" >
+		<div class="center mainpage title" >
+			<div class="name-container">
+				<div class="name">
+					<div class="side">Wellcome {{getBookie().name}}</div>
+					<div class="side back">{{getBookie().clientType}}</div>
+				</div>
+			</div>
+		</div>
+		<form name="betSportForm"> 
+			<input type="radio" ng-model="sport" value="ALL">All<br />
+			<input type="radio" ng-model="sport" value="FOOTBALL">FOOTBALL<br />
+			<input type="radio" ng-model="sport" value="BASKETBALL">BASKETBALL<br />
+			<input type="radio" ng-model="sport" value="SOCCER">SOCCER<br />
+			<input type="radio" ng-model="sport" value="BASEBALL">BASEBALL<br />
+			<input type="radio" ng-model="sport" value="HOCKEY">HOCKEY<br />
+			<input type="radio" ng-model="sport" value="TENNIS">TENNIS<br />
+			<input type="radio" ng-model="sport" value="BY_ID">By ID :
+			<input class="textField" type="text" ng-model="betId" placeholder="Bet Id"><br /> 
+			<input type="radio" ng-model="betSport" value="UPTO_WAGER">UPTO_WAGER :
+			<input class="textField" type="text" ng-model="wager" placeholder="Maximum Wager"><br /> 
+			
+			
+			<input type="button" class="button" value="Show bets" ng-click="getBookieBets(sport)" />
+		</form>
+		<div id="betsDiv" class="center">
+			<div class="tableDiv">
+				<table class="general">
+					<tr class="head">
+						<th colspan="10">
+							<div id="tableDisplayHeader">
+								Displaying Bets
+							</div>
+						</th>
+					</tr>
+					<tr class="head">
+						<th>BET_ID</th>
+						<th>BET_TITLE</th>
+						<th>SPORT</th>
+						<th>EVENT_DATE</th>
+						<th>WAGER</th>
+						<th>ODDS</th>
+						<th>IMAGE</th>
+						<th>RECEIPT</th>
+					</tr>
+					<tr ng-repeat="bet in bookieBets"
+						ng-class="{'selected':$index == selectedRow}"
+						ng-click="setClickedRow($index, bet)">
+						<td>{{ bet.betId }}</td>
+						<td>{{ bet.betTitle }}</td>
+						<td>{{ bet.sport }}</td>
+						<td>{{ bet.eventDate | date:'MM-dd-yyyy'}}</td>
+						<td>{{ bet.betWager }}</td>
+						<td>{{ bet.betOdds }}</td>
+						<td>{{ bet.betImage }}</td>
+						<td>{{ bet.betReceipt }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="selectedBetFieldsDiv" class="center">
+			<table class="general2">
+				<tr>
+					<td>BET_TITLE :</td><td><input class="textField" type="text" ng-model="bet.betTitle" placeholder="Title" ng-readonly="!(selectedRow==null)"></td>
+				</tr>			
+				<tr>
+					<td>EVENT_DATE :</td><td><input class="textField" type="date" ng-model="bet.eventDate" placeholder="YYYY-MM-DD" ng-readonly="!(selectedRow==null)"></td>
+				</tr>			
+				<tr>
+					<td>SPORT :</td>
+					<td>
+						<select name="sportSelection" class="textField" ng-model="bet.sport">
+							<option value="FOOTBALL">FOOTBALL</option>
+							<option value="BASKETBALL">BASKETBALL</option>
+							<option value="SOCCER">SOCCER</option>
+							<option value="BASEBALL">BASEBALL</option>
+							<option value="HOCKEY">HOCKEY</option>
+							<option value="TENNIS">TENNIS</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>WAGER :</td><td><input class="textField" type="text" ng-model="bet.betWager" placeholder="Wager" ng-readonly="!(selectedRow==null)"></td>
+				</tr>				
+				<tr>
+					<td>ODDS :</td><td><input class="textField" type="text" ng-model="bet.betOdds" placeholder="Odds" ng-readonly="!(selectedRow==null)"></td>
+				</tr>			
+				<tr>
+					<td>RECEIPT :</td><td><input class="textField" type="text" ng-model="bet.betReceipt" placeholder="Receipt"></td>
+				</tr>			
+				<tr>
+					<td>IMAGE :</td><td><input class="textField" type="text" ng-model="bet.betImage" placeholder="Image" ng-readonly="!(selectedRow==null)"></td>
+				</tr>			
+				
+			</table>	
+			<div ng-show="true" class="center">
+				<!-- 2 buttons will be shown only if a bet selected from table -->
+				<input type="button" class="button2" value="Update Bet" ng-click="updateBet(bet)" ng-hide="selectedRow==null"/>
+				<input type="button" class="button2" value="Remove Bet" ng-click="removeBet(bet)" ng-hide="selectedRow==null"/>
+				<input type="button" class="button2" value="unselect" ng-click="clearBet()" ng-hide="selectedRow==null"/>
+				<!-- button will be shown if no bet selected -->
+				<input type="button" class="button2" value="Create new Bet" ng-click="createBet()" ng-show="selectedRow==null"/>
+			</div>
+			<div ng-show="isOperationFailed()" class="center">
+				Operation failed. Please make sure all details are correct and legal.
+			</div>
+		</div>
+	</div>	
+	
+		<!--  This div will be shown after successful ADMINSPORT login  -->
+	
+	<div id="adminPage" class="center mainpage" ng-controller="adminCtrl" ng-init="init()" ng-show="isAdmin()" >
+		<div class="center mainpage title" >
+			<div class="name-container">
+				<div class="name">
+					<div class="side">Wellcome {{getAdmin().name}}</div>
+					<div class="side back">{{getAdmin().clientType}}</div>
+				</div>
+			</div>
+		</div>
+		
+		<form name="adminPanelSelectionForm" class="center"> 
+			<input type="radio" ng-model="adminPanel" value="BOOKIES">BOOKIES panel<br/>
+			<input type="radio" ng-model="adminPanel" value="PLAYERS">PLAYERS panel 
+		</form>
+		
+		<!--  ADMIN - Bookies panel  -->
+		<div id="bookiesPanel"class="center" ng-show="adminPanel=='BOOKIES'">
+			<hr />
+			<form name="bookiesModeForm" class="center"> 
+				<input type="radio" ng-model="bookiesMode" value="ALL">All<br />
+				<input type="radio" ng-model="bookiesMode" value="BY_ID">By ID :
+				<input class="textField2" type="text" ng-model="bookieId" placeholder="Bookie ID"><br /> 
+				<input type="button" class="button" value="Show bookies" ng-click="getBookies(bookiesMode)" />
+			</form>
+			<div id="bookiesDiv" class="center">
+				<div class="tableDiv">
+					<table class="general">
+						<tr class="head">
+							<th colspan="4">
+								<div id="tableDisplayHeader">
+									Displaying BOOKIES
+								</div>
+							</th>
+						</tr>
+						<tr class="head">
+							<th>Bookie_Name</th>
+							<th>Bookie_Password</th>
+							<th>Bookie_Email</th>
+						</tr>
+						<tr ng-repeat="bookie in bookies"
+							ng-class="{'selected':$index == bookiesSelectedRow}"
+							ng-click="setBookieClickedRow($index, bookie)">
+							<td>{{ bookie.bookieId }}</td>
+							<td>{{ bookie.bookieName }}</td>
+							<td>{{ bookie.bookiePassward }}</td>
+							<td>{{ bookie.bookieEmail }}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div id="selectedBookieFieldsDiv" class="center">
+				<table class="general2">
+					<tr>
+						<td>Name :</td><td><input class="textField" type="text" ng-model="bookie.bookieName" placeholder="Enter Name" ng-readonly="!(bookiesSelectedRow==null)"></td>
+					</tr>			
+					<tr>
+						<td>Password :</td><td><input class="textField" type="text" ng-model="bookie.bookiePassward" placeholder="******."></td>
+					</tr>			
+					<tr>
+						<td>Email :</td><td><input class="textField" type="text" ng-model="bookie.bookieEmail" placeholder="some@email.com"></td>
+					</tr>			
+				</table>	
+				<div ng-show="true" class="center">
+					<!-- 2 buttons will be shown only if a bookie selected from table -->
+					<input type="button" class="button2" value="Update Bookie" ng-click="updateBookie(bookie)" ng-hide="bookiesSelectedRow==null"/>
+					<input type="button" class="button2" value="Remove Bookie" ng-click="removeBookie(bookie)" ng-hide="bookiesSelectedRow==null"/>
+					<input type="button" class="button2" value="Unselect" ng-click="clearBookie()" ng-hide="bookiesSelectedRow==null"/>
+					<!-- button will be shown if no bookie selected -->
+					<input type="button" class="button2" value="Create new Bookie" ng-click="createBookie()" ng-show="bookiesSelectedRow==null"/>
+				</div>
+				<div ng-show="isOperationFailed()" class="center">
+					Operation failed. Please make sure all details are correct and legal.
+				</div>
+			</div>
+		</div>
+		
+		<!--  ADMIN - Players panel  -->
+		<div id="playersPanel"class="center" ng-show="adminPanel=='PLAYERS'">
+			<hr />
+			<form name="playersModeForm" class="center"> 
+				<input type="radio" ng-model="playersMode" value="ALL">All<br />
+				<input type="radio" ng-model="playersMode" value="BY_ID">By ID :
+				<input class="textField2" type="text" ng-model="playerId" placeholder="Player Id"><br /> 
+				<input type="button" class="button" value="Show Players" ng-click="getPlayers(playersMode)" />
+			</form>
+			<div id="playersDiv" class="center">
+				<div class="tableDiv">
+					<table class="general">
+						<tr class="head">
+							<th colspan="3">
+								<div id="tableDisplayHeader">
+									Displaying PLAYERS
+								</div>
+							</th>
+						</tr>
+						<tr class="head">
+							<th>Player_Name</th>
+							<th>Player_Password</th>
+							<th>Player_Email</th>
+						</tr>
+						<tr ng-repeat="player in players"
+							ng-class="{'selected':$index == playersSelectedRow}"
+							ng-click="setPlayerClickedRow($index, player)">
+							<td>{{ player.playerId }}</td>
+							<td>{{ player.playerName }}</td>
+							<td>{{ player.playerPassword }}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div id="selectedPlayerFieldsDiv" class="center">
+				<table class="general2">
+					<tr>
+						<td>Name :</td><td><input class="textField" type="text" ng-model="player.playerName" placeholder="Enter Player Name" ng-readonly="!(playersSelectedRow==null)"></td>
+					</tr>			
+					<tr>
+						<td>Password :</td><td><input class="textField" type="text" ng-model="player.playerPassword" placeholder="*******"></td>
+					</tr>
+					<tr>
+						<td>Email :</td><td><input class="textField" type="text" ng-model="player.playerEmail" placeholder="some@email.com"></td>
+					</tr>
+				</table>	
+				<div ng-show="true" class="center">
+					<!-- 2 buttons will be shown only if a player selected from table -->
+					<input type="button" class="button2" value="Update Player" ng-click="updatePlayer(player)" ng-hide="playersSelectedRow==null"/>
+					<input type="button" class="button2" value="Remove Player" ng-click="removePlayer(player)" ng-hide="playersSelectedRow==null"/>
+					<input type="button" class="button2" value="Unselect" ng-click="clearPlayer()" ng-hide="playersSelectedRow==null"/>
+					<!-- button will be shown if no player selected -->
+					<input type="button" class="button2" value="Create new Player" ng-click="createPlayer()" ng-show="playersSelectedRow==null"/>
+				</div>
+				<div ng-show="isOperationFailed()" class="center">
+					Operation failed. Please make sure all details are correct and legal.
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!--  This div will be shown when a client is logged out  -->
+	<div id="logoutPage" class="center logoutpage" ng-controller="logoutCtrl" ng-init="init()" ng-show="isLoggedIn()" >
+		<div class="center">
+			<button class="button3" ng-click="logout()" width="44">Logout</button>
+		</div>
+	</div>
+	
+	<hr/>
+
+</div>
+
+
+</body>
+</html>

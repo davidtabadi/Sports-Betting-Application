@@ -1,0 +1,14 @@
+.main {
+	color: blue;
+	font-weight: bold;
+}
+
+.infoMessage {
+	color: green;
+	font-weight: bold;
+}
+
+.errorMessage{
+	color: red;
+	font-weight: bold;
+}

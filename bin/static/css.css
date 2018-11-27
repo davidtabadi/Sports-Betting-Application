@@ -9,14 +9,14 @@ body {
 
 .form-style-9{
     max-width: 450px;
-    background: #FAFAFA;
+    background: GhostWhite; /*#FAFAFA*/
     padding: 30px;
     margin: 100px auto;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
     border: 6px solid #305A72;
-    
 }
+
 .form-style-9 ul{
     padding:0;
     margin:0;
@@ -59,6 +59,7 @@ body {
     width: 100%;
     height: 100px;
 }
+
 .form-style-9 ul li input[type="button"], 
 .form-style-9 ul li input[type="submit"] {
     -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
@@ -76,8 +77,9 @@ body {
 }
 .form-style-9 ul li input[type="button"]:hover, 
 .form-style-9 ul li input[type="submit"]:hover {
-    background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
-    background-color: #28739E;
+/*     background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%); */
+/*     background-color: #28739E; */
+	background-color: black;
 }
 
 .content { 
@@ -94,11 +96,16 @@ h1 {
     text-align: center;
 }
 h2 {
-	color: rgb(7, 67, 102);;
+	color: rgb(7, 67, 102);
     text-align: center;
 }
 
 h3 {
+    color: rgb(7, 67, 102);;
+    text-align: left;
+}
+
+h4 {
     color: rgb(7, 67, 102);;
     text-align: left;
 }
@@ -110,8 +117,8 @@ input {
 }
 
 #resultTable {
-	max-width: 525px;
-    background: #FAFAFA;
+	max-width: fit-content;
+    background: GhostWhite;
     padding: 30px;
     margin: 100px auto;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
@@ -124,7 +131,7 @@ input {
 	color: red;
 	text-align: center;
 	max-width: 450px;
-    background: #FAFAFA;
+    background: GhostWhite;
     padding: 30px;
     margin: 100px auto;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
@@ -147,26 +154,19 @@ tr {
 	width: 450px;
 }
 
-#imgborder {
-	border-style: solid;
-	border-width: 5px;
-	border-color: #3985B1;
-	width: 60%;
-}
-
 .top {
 	position: fixed; 
     top: 0; 
     width: 80%;
     height: auto;
-    background: #FAFAFA;
+    background-color: GhostWhite;
+/*     background-image: url("images/flowergif.gif"); */
     box-shadow: inset 0px 1px 0px 0px #3985B1;
     border-radius: 10px;
     border: 6px solid #305A72;
     color: #3985B1;
     -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
     -webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
-    cursor: pointer;
     z-index: 1;
 }
 
@@ -174,7 +174,7 @@ tr {
     position: absolute;
     width: auto;
     height: auto;
-    background: #FAFAFA;
+    background: GhostWhite;
     padding: 30px;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
@@ -199,7 +199,7 @@ tr {
     margin: 15px auto;
 }
 
-#home {
+#doc {
    -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
     -webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
     box-shadow: inset 0px 1px 0px 0px #3985B1;
@@ -215,6 +215,10 @@ tr {
     height: 50px;
     margin: 15px auto;
     margin-left: 25px;
+}
+
+#doc:hover {
+	background-color: black;
 }
 
 #logout {
@@ -235,10 +239,14 @@ tr {
     margin-right: 25px;
 }
 
+#logout:hover {
+	background-color: black;
+}
+
 
 #purchaseTable {
 	max-width: 525px;
-    background: #FAFAFA;
+    background: GhostWhite;
     padding: 20px;
  
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
@@ -248,7 +256,7 @@ tr {
 
 .form-style-purchase{
     max-width: 450px;
-    background: #FAFAFA;
+    background: GhostWhite;
     padding: 15px;
     margin: 10px auto;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
@@ -272,6 +280,139 @@ tr {
     width: 220px;
 }
 
+#buy {
+    background-color: #216288;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    text-decoration: none;
+    font: 12px Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
 
+#capitalize {
+	text-transform: capitalize;
+	letter-spacing: 1px;
+}
+
+img {
+	max-height: 150px;
+  	max-width: 150px;
+  	-o-object-fit: contain;
+}
+
+#email {
+	max-height: 150px;
+  	max-width: 150px;
+  	-o-object-fit: contain;
+}
+
+
+#couponResultTable {
+	width: 700px;
+    background: GhostWhite;
+    padding: 5px;
+    margin: 0px auto;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 0px 0px 10px 10px;
+    border-left: 6px solid #305A72;
+    border-right: 6px solid #305A72;
+    border-bottom: 6px solid #305A72;
+}
+
+#couponTd {
+	color: #3985B1;
+	text-align: center;
+	font-weight: bold;
+	width: max-content;
+    padding: 10px;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    border: 3px solid #305A72;
+}
+
+.imgTable {
+    width: 700px;
+    background: GhostWhite;
+    padding: 5px;
+    margin: 0px auto;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 10px 10px 0px 0px;
+    border-left: 6px solid #305A72; 
+    border-top: 6px solid#305A72;
+    border-right: 6px solid#305A72;
+
+}
+
+#imgTd { 
+	text-align: center;
+	font-weight: bold;
+	width: max-content;
+    padding: 10px;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    border: 3px solid #305A72;  
+}
+
+#myBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: red; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+}
+
+#myBtn:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+}
+
+
+#buttonInput:hover {
+	background-color: black;
+}
+
+#tech {
+	width: 200px;
+    background-color: #216288;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    margin-right: 25px;
+    text-decoration: none;
+    font: 12px Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+#tech:hover {
+	background-color: black;
+}
+/* 
+.proper {
+	text-transform: lowercase;
+}
+.proper:first-letter {
+	text-transform: uppercase;
+} */
+
+/* input[type="date"]:before{
+    color: white;
+    content:attr(placeholder);
+} */
+
+/* input[type=date]{
+	width: 200px;
+}
+span {
+	color: rgb(7, 67, 102);
+	width: 210px;
+	float: left;
+	text-align: center;
+} */
 
 

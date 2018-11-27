@@ -28,12 +28,11 @@ public class Player {
 		super();
 	}
 
-	public Player(String playerName, String playerPassword, String playerEmail, Collection<Bet> playerBets) {
+	public Player(String playerName, String playerPassword, String playerEmail) {
 		super();
 		this.playerName = playerName;
 		this.playerPassword = playerPassword;
 		this.playerEmail = playerEmail;
-		this.playerBets = playerBets;
 	}
 
 	@Id
@@ -74,7 +73,7 @@ public class Player {
 		this.playerEmail = playerEmail;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "PLAYER_BETS", joinColumns = @JoinColumn(name = "PLAYER_ID"), inverseJoinColumns = @JoinColumn(name = "BET_ID"))
 	public Collection<Bet> getPlayerBets() {
 		return playerBets;
@@ -87,7 +86,7 @@ public class Player {
 	@Override
 	public String toString() {
 		return "Player [playerId=" + playerId + ", playerName=" + playerName + ", playerPassword=" + playerPassword
-				+ ", playerEmail=" + playerEmail + ", playerBets=" + playerBets + "]";
+				+ ", playerEmail=" + playerEmail + "]";
 	}
 
 }

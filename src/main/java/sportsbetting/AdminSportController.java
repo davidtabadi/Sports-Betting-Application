@@ -36,15 +36,17 @@ public class AdminSportController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/api/admin/login/{userName}/{password}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Message adminLogin(@PathVariable("userName") String userName, @PathVariable("password") String password,
-			HttpSession session) throws SportException {
+	public ClientTypeDTO adminLogin(@PathVariable("userName") String userName,
+			@PathVariable("password") String password, HttpSession session) throws SportException {
 		adminSportService.adminLogin(ClientType.ADMINSPORT, userName, password);
 		if (adminSportService.adminLogin(ClientType.ADMINSPORT, userName, password) != null && userName != null
 				&& !userName.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
 			session.setAttribute("admin", adminSportService);
-			return new Message("Admin Sport : Session ID: " + session.getId());
+			String sessionID = session.getId();
+			System.err.println("AdminSport Session ID: " + sessionID);
+			return new ClientTypeDTO(userName, password, ClientType.ADMINSPORT);
 		} else {
-			throw new SportException("Admin Login Failed");
+			throw new SportException("AdminSport Login Failed");
 		}
 	}
 
@@ -68,8 +70,9 @@ public class AdminSportController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, path = "/api/admin/bookies/{bookieId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void removeBookie(@PathVariable("bookieId") Long bookieId, HttpSession session) throws SportException {
-		getAdminServiceFromSession(session).removeBookie(bookieId);
+	public void removeBookie(@PathVariable("bookieId") Long bookieId, @RequestBody Bookie bookieToRemove,
+			HttpSession session) throws SportException {
+		getAdminServiceFromSession(session).removeBookie(bookieId, bookieToRemove);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/api/admin/bookies/{bookieId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,8 +100,9 @@ public class AdminSportController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, path = "/api/admin/players/{playerId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void removePlayer(@PathVariable("playerId") Long playerId, HttpSession session) throws SportException {
-		getAdminServiceFromSession(session).removePlayer(playerId);
+	public void removePlayer(@PathVariable("playerId") Long playerId, @RequestBody Player playerToRemove,
+			HttpSession session) throws SportException {
+		getAdminServiceFromSession(session).removePlayer(playerId, playerToRemove);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/api/admin/players/{playerId}", produces = MediaType.APPLICATION_JSON_VALUE)

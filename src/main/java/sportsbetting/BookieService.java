@@ -8,11 +8,9 @@ public interface BookieService {
 
 	public Bet updateBet(Long betId, Bet betToUpdate) throws SportException;
 
-	public void removeBet(Long betId) throws SportException;
+	public void removeBet(Long betId, Bet betToRemove) throws SportException;
 
 	public Bet getBet(Long betId) throws SportException;
-
-	public Collection<Bet> getAllBets() throws SportException;
 
 	public Collection<Bet> getMyBookieBets() throws SportException;
 

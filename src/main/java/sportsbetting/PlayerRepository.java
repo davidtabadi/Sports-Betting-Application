@@ -16,8 +16,10 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
 
 	public Player findByPlayerId(Long playerId) throws SportException;
 
-	// public Collection<Bet> findAllByPlayerBets(Bet playerBets) throws
-	// SportException;
+	public Player findByPlayerName(String playerName) throws SportException;
 
 	public Collection<Player> findAllByPlayerBets(Bet playerBets) throws SportException;
+
+	public Player findByPlayerBets(Bet bets) throws SportException;
+
 }

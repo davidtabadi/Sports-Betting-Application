@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,16 +28,17 @@ public class Bet {
 	private String betImage;
 	private String betReceipt;
 
-	private Collection<Bookie> bookies;
-
 	private Collection<Player> players;
+
+	// private Collection<Bookie> bookies;
+	private Bookie bookie;
 
 	public Bet() {
 		super();
 	}
 
 	public Bet(String betTitle, Sport sport, Date eventDate, double betWager, double betOdds, String betImage,
-			String betReceipt, Collection<Bookie> bookies, Collection<Player> players) {
+			String betReceipt) {
 		super();
 		this.betTitle = betTitle;
 		this.sport = sport;
@@ -45,8 +47,6 @@ public class Bet {
 		this.betOdds = betOdds;
 		this.betImage = betImage;
 		this.betReceipt = betReceipt;
-		this.bookies = bookies;
-		this.players = players;
 	}
 
 	@Id
@@ -60,7 +60,7 @@ public class Bet {
 		this.betId = betId;
 	}
 
-	@Column(name = "BET_TITLE", nullable = false)
+	@Column(name = "BET_TITLE", unique = true, nullable = false)
 	public String getBetTitle() {
 		return betTitle;
 	}
@@ -125,15 +125,6 @@ public class Bet {
 		this.betReceipt = betReceipt;
 	}
 
-	@ManyToMany(mappedBy = "bookieBets")
-	public Collection<Bookie> getBookies() {
-		return bookies;
-	}
-
-	public void setBookies(Collection<Bookie> bookies) {
-		this.bookies = bookies;
-	}
-
 	@ManyToMany(mappedBy = "playerBets")
 	public Collection<Player> getPlayers() {
 		return players;
@@ -143,11 +134,20 @@ public class Bet {
 		this.players = players;
 	}
 
+	@ManyToOne
+	public Bookie getBookie() {
+		return bookie;
+	}
+
+	public void setBookie(Bookie bookie) {
+		this.bookie = bookie;
+	}
+
 	@Override
 	public String toString() {
 		return "Bet [betId=" + betId + ", betTitle=" + betTitle + ", sport=" + sport + ", eventDate=" + eventDate
 				+ ", betWager=" + betWager + ", betOdds=" + betOdds + ", betImage=" + betImage + ", betReceipt="
-				+ betReceipt + ", bookies=" + bookies + ", players=" + players + "]";
+				+ betReceipt + "]";
 	}
 
 }

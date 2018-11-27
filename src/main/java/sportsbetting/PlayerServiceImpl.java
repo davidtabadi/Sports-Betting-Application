@@ -2,6 +2,7 @@ package sportsbetting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,31 +31,36 @@ public class PlayerServiceImpl implements PlayerService {
 	@Transactional
 	@Override
 	public Bet takeBet(Bet betToTake) throws SportException {
-
-		// Handler dispatch failed; nested exception is java.lang.StackOverflowError
-		// ========================================================
-
-		betRepository.save(betToTake);
+		Date today = new Date();
+		if (betToTake.getEventDate().before(today)) {
+			throw new SportException("Event Date can't be earlier than today");
+		}
+		if (betToTake.getBetOdds() < 1) {
+			throw new SportException("Odds must be greater than 1");
+		}
+		if (betToTake.getBetWager() <= 0) {
+			throw new SportException("Wager must be greater than 0");
+		}
+		Collection<Bet> allAvailableBets = getAllAvailableBets();
+		Bet betFound = betRepository.findByBetTitle(betToTake.getBetTitle());
 		Collection<Bet> playerBets = getMyPlayerBets();
-		playerBets.add(betToTake);
-
-		Collection<Player> allPlayers = playerRepository.findAllByPlayerBets(betToTake);
-		allPlayers.add(myPlayer());
-		Collection<Bookie> allBookies = bookieRepository.findAllByBookieBets(betToTake);
-		betToTake.setPlayers(allPlayers);
-		betToTake.setBookies(allBookies);
-		betRepository.save(betToTake);
-
+		for (Bet bet : allAvailableBets) {
+			if (bet.equals(betFound)) {
+				betRepository.save(betToTake);
+				playerBets.add(betToTake);
+				myPlayer().setPlayerBets(playerBets);
+				playerRepository.save(myPlayer());
+			}
+		}
 		return betToTake;
 	}
 
 	@Transactional
 	@Override
 	public Collection<Bet> getMyPlayerBets() throws SportException {
-		Collection<Bet> playerBets = betRepository.findAllByPlayers(player);
-		playerBets = myPlayer().getPlayerBets();
-		System.out.println(playerBets.toString());
-		return playerBets;
+		Collection<Bet> myPlayerBets = betRepository.findPlayerBets(myPlayer().getPlayerId());
+		System.err.println(myPlayerBets.toString());
+		return myPlayerBets;
 	}
 
 	@Transactional
@@ -62,17 +68,13 @@ public class PlayerServiceImpl implements PlayerService {
 	public PlayerServiceImpl playerLogin(ClientType clientType, String userName, String password)
 			throws SportException {
 		player = playerRepository.findPlayerByUserNameAndPassword(userName, password);
-		// Long playerId = player.getPlayerId();
 		if (player == null) {
 			throw new SportException("Player Login Failed");
 		} else {
-
 			Collection<Bet> playerBets = betRepository.findAllByPlayers(player);
 			player.setPlayerBets(playerBets);
 			playerRepository.save(player);
-			System.out.println("Player Bets: " + playerBets.toString());
-			System.out.println("Player ID: " + player.getPlayerId());
-
+			System.err.println("Player ID: " + player.getPlayerId());
 			return this;
 		}
 
@@ -102,5 +104,56 @@ public class PlayerServiceImpl implements PlayerService {
 			}
 		}
 		return allPlayerBetsUpToWager;
+	}
+
+	@Transactional
+	@Override
+	public Collection<Bet> getAllAvailableBets() throws SportException {
+		Collection<Bet> allBets = betRepository.findAll();
+		Collection<Bet> myPlayerBets = getMyPlayerBets();
+		Collection<Bet> availableBets = new ArrayList<Bet>();
+		int check;
+		if (myPlayerBets == null) {
+			return allBets;
+		} else {
+			for (Bet betInAllBets : allBets) {
+				check = 0;
+				for (Bet betInMyBets : myPlayerBets) {
+					if (betInMyBets.getBetId() == betInAllBets.getBetId()) {
+						check = 1;
+					}
+				}
+				if (check == 0) {
+					availableBets.add(betInAllBets);
+				}
+			}
+		}
+		return availableBets;
+	}
+
+	@Transactional
+	@Override
+	public Collection<Bet> getAllAvailableBetsBySport(Sport sport) throws SportException {
+		Collection<Bet> allAvailableBets = getAllAvailableBets();
+		Collection<Bet> allAvailableBetsBySport = new ArrayList<Bet>();
+		for (Bet bet : allAvailableBets) {
+			if (sport.equals(bet.getSport())) {
+				allAvailableBetsBySport.add(bet);
+			}
+		}
+		return allAvailableBetsBySport;
+	}
+
+	@Transactional
+	@Override
+	public Collection<Bet> getAllAvailableBetsUpToWager(double wager) throws SportException {
+		Collection<Bet> allAvailableBets = getAllAvailableBets();
+		Collection<Bet> allAvailableBetsUpToWagerr = new ArrayList<Bet>();
+		for (Bet bet : allAvailableBets) {
+			if ((wager > bet.getBetWager()) || (wager == bet.getBetWager())) {
+				allAvailableBetsUpToWagerr.add(bet);
+			}
+		}
+		return allAvailableBetsUpToWagerr;
 	}
 }

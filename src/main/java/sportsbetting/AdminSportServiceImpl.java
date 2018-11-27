@@ -35,20 +35,18 @@ public class AdminSportServiceImpl implements AdminSportService {
 	@Override
 	public Bookie updateBookie(Long bookieId, Bookie bookieToUpdate) throws SportException {
 		Bookie originBookie = getBookie(bookieId);
-		if (originBookie.getBookieId() != bookieId) {
+		if (originBookie == null) {
 			throw new SportException("The Bookie ID does not match. ");
 		} else {
-			originBookie.setBookiePassword(bookieToUpdate.getBookiePassword());
-			originBookie.setBookieEmail(bookieToUpdate.getBookieEmail());
-			originBookie.setBookieBets(bookieToUpdate.getBookieBets());
+			bookieToUpdate.setBookieId(bookieId);
 			bookieRepository.save(bookieToUpdate);
-			return originBookie;
 		}
+		return bookieToUpdate;
 	}
 
 	@Transactional
 	@Override
-	public void removeBookie(Long bookieId) throws SportException {
+	public void removeBookie(Long bookieId, Bookie bookieToRemove) throws SportException {
 		Bookie originBookie = getBookie(bookieId);
 		if (originBookie == null) {
 			throw new SportException("No Bookie with this ID . ");
@@ -85,20 +83,18 @@ public class AdminSportServiceImpl implements AdminSportService {
 	@Override
 	public Player updatePlayer(Long playerId, Player playerToUpdate) throws SportException {
 		Player originPlayer = getPlayer(playerId);
-		if (originPlayer.getPlayerId() != playerId) {
+		if (originPlayer == null) {
 			throw new SportException("The Player ID does not match. ");
 		} else {
-			originPlayer.setPlayerPassword(playerToUpdate.getPlayerPassword());
-			originPlayer.setPlayerEmail(playerToUpdate.getPlayerEmail());
-			originPlayer.setPlayerBets(playerToUpdate.getPlayerBets());
+			playerToUpdate.setPlayerId(playerId);
 			playerRepository.save(playerToUpdate);
-			return originPlayer;
 		}
+		return playerToUpdate;
 	}
 
 	@Transactional
 	@Override
-	public void removePlayer(Long playerId) throws SportException {
+	public void removePlayer(Long playerId, Player playerToRemove) throws SportException {
 		Player originPlayer = getPlayer(playerId);
 		if (originPlayer == null) {
 			throw new SportException("No Player with this ID . ");
@@ -145,7 +141,9 @@ public class AdminSportServiceImpl implements AdminSportService {
 	@Transactional
 	@Override
 	public Collection<Bet> getAllBets() throws SportException {
-		return betRepository.findAll();
+		Collection<Bet> allBets = betRepository.findAll();
+		System.err.println(allBets.toString());
+		return allBets;
 	}
 
 	@Transactional

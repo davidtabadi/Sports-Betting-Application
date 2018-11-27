@@ -36,13 +36,15 @@ public class BookieController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/api/bookie/login/{userName}/{password}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Message bookieUserLogin(@PathVariable("userName") String userName, @PathVariable("password") String password,
-			HttpSession session) throws SportException {
+	public ClientTypeDTO bookieUserLogin(@PathVariable("userName") String userName,
+			@PathVariable("password") String password, HttpSession session) throws SportException {
 		bookieService.bookieLogin(ClientType.BOOKIE, userName, password);
 		if ((bookieService.bookieLogin(ClientType.BOOKIE, userName, password)) != null && userName != null
 				&& !userName.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
 			session.setAttribute("bookie", bookieService);
-			return new Message("Bookie : Session ID: " + session.getId());
+			String sessionID = session.getId();
+			System.err.println("Bookie Session ID: " + sessionID);
+			return new ClientTypeDTO(userName, password, ClientType.BOOKIE);
 		} else {
 			throw new SportException("Bookie Login Failed");
 		}
@@ -68,8 +70,9 @@ public class BookieController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, path = "/api/bookie/removebet/{betId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void removeBet(@PathVariable("betId") Long betId, HttpSession session) throws SportException {
-		getBookieServiceFromSession(session).removeBet(betId);
+	public void removeBet(@PathVariable("betId") Long betId, @RequestBody Bet betToRemove, HttpSession session)
+			throws SportException {
+		getBookieServiceFromSession(session).removeBet(betId, betToRemove);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/api/bookie/getbet/{betId}", produces = MediaType.APPLICATION_JSON_VALUE)

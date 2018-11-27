@@ -2,6 +2,7 @@ package sportsbetting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,18 +31,21 @@ public class BookieServiceImpl implements BookieService {
 	@Transactional
 	@Override
 	public Bet addBet(Bet betToAdd) throws SportException {
-
-		betRepository.save(betToAdd);
+		Date today = new Date();
+		if (betToAdd.getEventDate().before(today)) {
+			throw new SportException("Event Date can't be earlier than today");
+		}
+		if (betToAdd.getBetOdds() < 1) {
+			throw new SportException("Odds must be greater than 1");
+		}
+		if (betToAdd.getBetWager() <= 0) {
+			throw new SportException("Wager must be greater than 0");
+		}
 		Collection<Bet> bookieBets = getMyBookieBets();
-		bookieBets.add(betToAdd);
-
-		Collection<Bookie> allBookies = bookieRepository.findAllByBookieBets(betToAdd);
-		allBookies.add(myBookie());
-		Collection<Player> allPlayers = playerRepository.findAllByPlayerBets(betToAdd);
-		betToAdd.setBookies(allBookies);
-		betToAdd.setPlayers(allPlayers);
 		betRepository.save(betToAdd);
-
+		bookieBets.add(betToAdd);
+		myBookie().setBookieBets(bookieBets);
+		bookieRepository.save(myBookie());
 		return betToAdd;
 	}
 
@@ -49,28 +53,43 @@ public class BookieServiceImpl implements BookieService {
 	@Override
 	public Bet updateBet(Long betId, Bet betToUpdate) throws SportException {
 		Bet originBet = getBet(betId);
-		if (originBet.getBetId() != betId) {
+		if (originBet == null) {
 			throw new SportException("The Bet ID does not match. ");
 		} else {
-			originBet.setBetWager(betToUpdate.getBetWager());
-			originBet.setBetOdds(betToUpdate.getBetOdds());
-			originBet.setBetImage(betToUpdate.getBetImage());
-			originBet.setBetReceipt(betToUpdate.getBetReceipt());
-			originBet.setBookies(betToUpdate.getBookies());
-			originBet.setPlayers(betToUpdate.getPlayers());
+			betToUpdate.setBetId(betId);
 			betRepository.save(betToUpdate);
-			return originBet;
 		}
+		return betToUpdate;
 	}
 
+	// Remove Bet Method === remove Bet, remove Bet from playerBets,
+	// remove Bet from BookieBets
 	@Transactional
 	@Override
-	public void removeBet(Long betId) throws SportException {
+	public void removeBet(Long betId, Bet betToRemove) throws SportException {
 		Bet originBet = getBet(betId);
 		if (originBet == null) {
-			throw new SportException("No Player with this ID . ");
+			throw new SportException("No Bet with this ID . ");
 		} else {
-			betRepository.deleteById(betId);
+
+			Bet betByBookieId = betRepository.getBookieBetByBookieId(myBookie().getBookieId(), betId);
+			System.err.println(betByBookieId.toString());
+
+			Player playerByBet = playerRepository.findByPlayerBets(originBet);
+			System.err.println(playerByBet.toString());
+
+			Bet betByPlayerId = betRepository.getPlayerBetByPlayerId(playerByBet.getPlayerId(), betId);
+			System.err.println(betByPlayerId.toString());
+
+			betRepository.delete(betByPlayerId);
+			betRepository.delete(betByBookieId);
+
+			System.err.println(originBet.toString());
+			betRepository.delete(originBet);
+
+			// betRepository.deleteById(betId);
+			// ===== TO DO remove also playerBets related to BET
+			// Remove Bet Method
 		}
 	}
 
@@ -83,9 +102,8 @@ public class BookieServiceImpl implements BookieService {
 	@Transactional
 	@Override
 	public Collection<Bet> getMyBookieBets() throws SportException {
-		Collection<Bet> bookieBets = betRepository.findAllByBookies(bookie);
-		bookieBets = myBookie().getBookieBets();
-		System.out.println(bookieBets.toString());
+		Collection<Bet> bookieBets = betRepository.findBookieBets(myBookie().getBookieId());
+		System.err.println(bookieBets.toString());
 		return bookieBets;
 	}
 
@@ -97,20 +115,10 @@ public class BookieServiceImpl implements BookieService {
 		if (bookie == null) {
 			throw new SportException("Bookie Login Failed");
 		} else {
-
-			Collection<Bet> bookieBets = betRepository.findAllByBookies(bookie);
-			bookie.setBookieBets(bookieBets);
 			bookieRepository.save(bookie);
-			System.out.println("Bookie Bets: " + bookieBets.toString());
 			System.out.println("Bookie ID: " + bookie.getBookieId());
-
 			return this;
 		}
-	}
-
-	@Override
-	public Collection<Bet> getAllBets() throws SportException {
-		return betRepository.findAll();
 	}
 
 	@Transactional
